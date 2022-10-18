@@ -25,21 +25,14 @@ const courses = [{
 app.get("/", (req, res) => {
     res.send("Hello this is my home page");
 });
-app.get("/api/courses", (req, res) => {
-    res.send(courses);
-});
 
 
-app.get("/api/courses", (req, res) => {
-    res.send("route to courses");
-});
-
+//add course
 app.post("/api/courses", (req, res) => {
     const {
         error
     } = validateCourse(req.body);
     if (error) return res.status(400).send(result.error.details[0].message);
-
 
     const course = {
         id: courses.length + 1,
@@ -50,12 +43,20 @@ app.post("/api/courses", (req, res) => {
     res.send(courses);
 })
 
+//get all courses
+app.get("/api/courses", (req, res) => {
+    res.send(courses);
+});
+
+
+//get single course
 app.get("/api/courses/:id", (req, res) => {
     const course = courses.find(c => c.id === parseInt(req.params.id));
     if (!course) return res.status(404).send("course not found");
     res.send(course);
 });
 
+//update course
 app.put("/api/courses/:id", (req, res) => {
     const course = courses.find(c => c.id === parseInt(req.params.id));
     if (!course) return res.status(404).send("course not found");
@@ -73,6 +74,17 @@ app.put("/api/courses/:id", (req, res) => {
 
 });
 
+//delete course
+app.delete("/api/courses/:id", (req, res) => {
+    const course = courses.find(c => c.id === parseInt(req.params.id));
+    if (!course) return res.status(404).send("course not found");
+
+    const index = courses.indexOf(course);
+    courses.splice(index, 1);
+    res.send(course)
+});
+
+//joi validation function
 function validateCourse(course) {
     const schema = Joi.object({
         name: Joi.string()
@@ -87,9 +99,6 @@ function validateCourse(course) {
 
     return schema.validate(course);
 }
-
-
-
 
 const PORT = process.env.PORT || 3000;
 
