@@ -1,6 +1,9 @@
+const Joi = require('joi');
 const express = require("express");
 
 const app = express();
+
+app.use(express.json());
 
 const courses = [{
         id: 1,
@@ -9,7 +12,7 @@ const courses = [{
     },
     {
         id: 2,
-        name: "course 3",
+        name: "course 2",
         description: "this is the second course"
     },
     {
@@ -20,12 +23,44 @@ const courses = [{
 ];
 
 app.get("/", (req, res) => {
+    res.send("Hello this is my home page");
+});
+app.get("/api/courses", (req, res) => {
     res.send(courses);
 });
+
 
 app.get("/api/courses", (req, res) => {
     res.send("route to courses");
 });
+
+app.post("/api/courses", (req, res) => {
+    const schema = Joi.object({
+        name: Joi.string()
+
+            .min(3)
+            .max(30)
+            .required(),
+
+        description: Joi.string()
+
+            .min(3)
+            .required()
+
+    });
+
+    const result = schema.validate(req.body);
+    console.log(result);
+
+
+    const course = {
+        id: courses.length + 1,
+        name: req.body.name,
+        description: req.body.description
+    };
+    courses.push(course);
+    res.send(courses);
+})
 
 app.get("/api/courses/:id", (req, res) => {
     const course = courses.find(c => c.id === parseInt(req.params.id));
