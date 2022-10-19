@@ -12,7 +12,11 @@ const courses = [{
     },
     {
         id: 2,
+<<<<<<< HEAD
         name: "course 3",
+=======
+        name: "course 2",
+>>>>>>> 9cce9997baf268b300c9be7a7f224bf0916a9b8e
         description: "this is the second course"
     },
     {
