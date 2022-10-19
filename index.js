@@ -1,9 +1,15 @@
 const Joi = require('joi');
 const express = require("express");
+const logger = require("./logger");
+const auth = require("./auth");
 
 const app = express();
 
 app.use(express.json());
+
+app.use(logger);
+app.use(auth);
+
 
 const courses = [{
         id: 1,
@@ -12,11 +18,7 @@ const courses = [{
     },
     {
         id: 2,
-<<<<<<< HEAD
-        name: "course 3",
-=======
         name: "course 2",
->>>>>>> 9cce9997baf268b300c9be7a7f224bf0916a9b8e
         description: "this is the second course"
     },
     {
