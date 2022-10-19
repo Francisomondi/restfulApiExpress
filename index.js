@@ -12,7 +12,7 @@ const courses = [{
     },
     {
         id: 2,
-        name: "course 2",
+        name: "course 3",
         description: "this is the second course"
     },
     {
